@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1f2fc06d-4447-4808-be90-5b46c7ab8bb7" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="1995ae28-a637-4119-b880-1aeb2651fc32" />
+	<flow name="jsontofileFlow" doc:id="cab5bb09-c7eb-4504-8c1e-827ad21782c8" >
+		<http:listener doc:name="jsontocsv" doc:id="5df8d34f-9dfa-4deb-bb7d-338231f130bc" config-ref="HTTP_Listener_config" path="/jsontocsv"/>
+		<ee:transform doc:name="Transform Message" doc:id="76c6447c-687e-44a8-9377-fb936e27dba2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<file:write doc:id="f6d0a132-8215-4481-b117-2789b4b40b31" config-ref="File_Config" path="Users\dattadeep\mulesoft\employee1.json"/>
+	</flow>
+</mule>
